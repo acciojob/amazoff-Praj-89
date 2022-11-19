@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 @Component
-public class AmazonRepository {
+public class OrderRepository {
     HashMap<String, Order> ordersmap = new HashMap<>();
 
     HashMap<String, DeliveryPartner> deliverypartnermap = new HashMap<>();
@@ -32,8 +32,23 @@ public class AmazonRepository {
 
     }
 
-    // size = all orders - assigned = ans
-    // p1 p2 p3
+    public Order getOrderById(String orderId) {
+        return ordersmap.get(orderId);
+    }
+    public DeliveryPartner getPartnerById(String partnerId) {
+        return deliverypartnermap.get(partnerId);
+    }
+    public List<String> getAllOrders() {
+
+        List<String> allOrders = new ArrayList<>();
+
+        for(Order order: ordersmap.values()){
+
+            allOrders.add(order.toString());
+        }
+        return allOrders;
+
+    }
     public void partnerPairOrder(String orderId, String partnerId) {
 
         if(!pairmap.containsKey(partnerId)){
@@ -50,23 +65,6 @@ public class AmazonRepository {
         mappingmap.put(orderId, partnerId);
 
     }
-
-    public Order getOrderById(String orderId) {
-        return ordersmap.get(orderId);
-    }
-
-    public DeliveryPartner getPartnerById(String partnerId) {
-        return deliverypartnermap.get(partnerId);
-    }
-
-
-    public int getNumberOfOrderAssignedToPartner(String partnerId) {
-        DeliveryPartner partner = deliverypartnermap.get(partnerId);
-        int currOrder = partner.getNumberOfOrders();
-        return currOrder;
-
-
-    }
     public List<String> getAllOrdersAssignedToPartner(String partnerId) {
         List<Order> orders = pairmap.get(partnerId);
 
@@ -77,17 +75,16 @@ public class AmazonRepository {
         }
         return ordersName;
     }
-    public List<String> getAllOrders() {
 
-        List<String> allOrders = new ArrayList<>();
+    public int getNumberOfOrderAssignedToPartner(String partnerId) {
+        DeliveryPartner partner = deliverypartnermap.get(partnerId);
+        int currOrder = partner.getNumberOfOrders();
+        return currOrder;
 
-        for(Order order: ordersmap.values()){
-
-            allOrders.add(order.toString());
-        }
-        return allOrders;
 
     }
+
+
     public Integer getCountOfUnassignedOrders() {
         int allOrders = ordersmap.size();
 
